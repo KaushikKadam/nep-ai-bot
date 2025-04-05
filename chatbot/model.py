@@ -4,7 +4,7 @@ from chatbot.pdf_reader import load_combined_text
 class NEPChatbot:
     def __init__(self):
         self.qa_pipeline = pipeline("question-answering", model="deepset/minilm-uncased-squad2")
-        self.paragraphs = load_combined_text().split('\n\n')  # Split by paragraph
+        self.paragraphs = load_combined_text().split(' ')  # Split by paragraph
 
     def find_best_context(self, question):
         # Simple scoring: count question keywords in each paragraph
@@ -21,4 +21,4 @@ class NEPChatbot:
         return result['answer']
 
     def reset_chat(self):
-        self.paragraphs = load_combined_text().split('\n\n')
+        self.paragraphs = load_combined_text().split(' ')
