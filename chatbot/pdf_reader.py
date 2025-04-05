@@ -13,9 +13,16 @@ def extract_text_from_pdf(file_path):
                 text += page_text + "\n"
     return text
 
+import re
+
 def load_combined_text():
-    combined_text = ""
-    for filename in os.listdir(PDF_DIR):
-        if filename.endswith(".pdf"):
-            combined_text += extract_text_from_pdf(os.path.join(PDF_DIR, filename))
-    return combined_text
+    with open("data/combined_text.txt", "r", encoding="utf-8") as f:
+        raw_text = f.read()
+
+    # Clean formatting: merge broken lines, remove weird newlines
+    clean_text = re.sub(r'\n+', ' ', raw_text)  # Replace multiple newlines with space
+    clean_text = re.sub(r'\s{2,}', ' ', clean_text)  # Replace multiple spaces with one
+    clean_text = clean_text.strip()
+
+    return clean_text
+
