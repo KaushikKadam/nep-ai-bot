@@ -24,5 +24,3 @@ streamlit run app.py
 - What is the 5+3+3+4 structure?
 - What does NEP 2022 say about exams?
 
----
-Made with ❤️ for a college project
