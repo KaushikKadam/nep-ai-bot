@@ -32,9 +32,9 @@ if user_input:
         response = st.session_state.bot.get_response(user_input)
         st.success(response)
 
-if st.button("🔄 Reload All PDFs"):
-    st.session_state.bot.reset_chat()
-    st.success("Knowledge refreshed from PDFs!")
+# if st.button("🔄 Reload All PDFs"):
+#     st.session_state.bot.reset_chat()
+#     st.success("Knowledge refreshed from PDFs!")
 
 st.markdown("---")
 st.markdown("Elphinstone college project | 2025")
