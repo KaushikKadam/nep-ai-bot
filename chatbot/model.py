@@ -1,25 +1,28 @@
-# chatbot/model.py
-import re
 from transformers import pipeline
 from chatbot.pdf_reader import load_combined_text
 
 class NEPChatbot:
     def __init__(self):
-        # Fast, reliable QnA model
-        self.qa_pipeline = pipeline("question-answering", model="distilbert-base-cased-distilled-squad")
-        raw_text = load_combined_text()
-        self.context = self.clean_text(raw_text)
+        print("⏳ Loading model...")
+        self.qa_pipeline = pipeline("question-answering", model="deepset/tinyroberta-squad2")
+        self.paragraphs = load_combined_text().split('\n\n')
+        print("✅ Model and context loaded.")
 
-    def clean_text(self, text):
-        # Remove weird line breaks and extra spaces
-        text = re.sub(r'\n+', ' ', text)
-        text = re.sub(r'\s{2,}', ' ', text)
-        return text.strip()
+    def find_best_context(self, question):
+        question_words = set(question.lower().split())
+
+        # Score based on overlapping words (basic relevance)
+        best_para = max(
+            self.paragraphs,
+            key=lambda para: len(set(para.lower().split()) & question_words)
+        )
+        return best_para.strip()
 
     def get_response(self, user_input):
-        result = self.qa_pipeline(question=user_input, context=self.context)
-        return result['answer']
+        context = self.find_best_context(user_input)
+        result = self.qa_pipeline(question=user_input, context=context)
+        return result['answer'].strip()
 
     def reset_chat(self):
-        raw_text = load_combined_text()
-        self.context = self.clean_text(raw_text)
+        self.paragraphs = load_combined_text().split('\n\n')
+        print("✅ Chat reset and context reloaded.")
