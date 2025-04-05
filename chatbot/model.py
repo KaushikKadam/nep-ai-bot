@@ -16,9 +16,9 @@ class NEPChatbot:
         return best_para
 
     def get_response(self, user_input):
-        result = self.qa_pipeline(question=user_input, context=self.context)
-        answer = result['answer'].replace("\n", " ").strip()
-        return answer
+        context = self.find_best_context(user_input)
+        result = self.qa_pipeline(question=user_input, context=context)
+        return result['answer']
 
     def reset_chat(self):
         self.paragraphs = load_combined_text().split(' ')
