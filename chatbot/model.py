@@ -3,14 +3,11 @@ from chatbot.pdf_reader import load_combined_text
 
 class NEPChatbot:
     def __init__(self):
-        # Load a high-performing model and tokenizer
         self.qa_pipeline = pipeline(
             "question-answering",
-            model="deepset/roberta-base-squad2",
-            tokenizer="deepset/roberta-base-squad2"
+            model="distilbert-base-cased-distilled-squad",
+            tokenizer="distilbert-base-cased-distilled-squad"
         )
-
-        # Load and preprocess the NEP text
         self.paragraphs = load_combined_text().split('\n\n')
 
     def find_best_context(self, question):
