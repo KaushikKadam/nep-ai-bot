@@ -1,24 +1,20 @@
 from transformers import pipeline
-from chatbot.pdf_reader import load_combined_text
 
 class NEPChatbot:
     def __init__(self):
-        self.qa_pipeline = pipeline("question-answering", model="deepset/minilm-uncased-squad2")
-        self.paragraphs = load_combined_text().split('\n\n')  # Split by paragraph
-
-    def find_best_context(self, question):
-        # Simple scoring: count question keywords in each paragraph
-        question_words = set(question.lower().split())
-        best_para = max(
-            self.paragraphs,
-            key=lambda para: len(set(para.lower().split()) & question_words)
+        self.qa_pipeline = pipeline(
+            "question-answering",
+            model="deepset/roberta-base-squad2",
+            tokenizer="deepset/roberta-base-squad2"
         )
-        return best_para
+        with open("data/faq_summary.txt", "r", encoding="utf-8") as f:
+            self.context = f.read().replace("\n", " ")
 
     def get_response(self, user_input):
-        context = self.find_best_context(user_input)
-        result = self.qa_pipeline(question=user_input, context=context)
-        return result['answer']
+        result = self.qa_pipeline(question=user_input, context=self.context)
+        answer = result['answer'].replace("\n", " ").strip()
+        return answer
 
     def reset_chat(self):
-        self.paragraphs = load_combined_text().split('\n\n')
+        with open("data/faq_summary.txt", "r", encoding="utf-8") as f:
+            self.context = f.read().replace("\n", " ")
