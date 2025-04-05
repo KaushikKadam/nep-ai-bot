@@ -19,11 +19,16 @@ if "bot" not in st.session_state:
 #     st.session_state.bot.reset_chat()
 
 st.markdown("""
-Ask anything about the National Education Policy 📘
-
-Try asking:
-- What is the 5+3+3+4 education system?
-- What changes were made in 2022?
+Ask anything about the National Education Policy (NEP) 2020.
+The bot is trained on the NEP 2020 document and can answer questions based on it.
+You can ask questions like:
+- What is the NEP 2020?
+- What are the key features of NEP 2020?
+- What is the vision of NEP 2020?
+- What is the implementation timeline?
+- What is the role of the Ministry of Education?
+- What is the 5+3+3+4 system?
+            
 """)
 
 user_input = st.text_input("Ask your question:")
