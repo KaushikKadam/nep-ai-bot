@@ -4,7 +4,11 @@ from chatbot.pdf_reader import load_combined_text
 class NEPChatbot:
     def __init__(self):
         print("⏳ Loading model...")
-        self.qa_pipeline = pipeline("question-answering", model="deepset/tinyroberta-squad2")
+        self.qa_pipeline = pipeline(
+            "question-answering",
+            model="model/minilm-uncased-squad2",
+            tokenizer="model/minilm-uncased-squad2"
+        )
         self.paragraphs = load_combined_text().split('\n\n')
         print("✅ Model and context loaded.")
 
